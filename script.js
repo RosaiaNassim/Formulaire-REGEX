@@ -1,53 +1,68 @@
-document.getElementById("regexForm").addEventListener("submit", function (event) {
+const form = document.querySelector("form");
+const nomInput = document.querySelector("#nom");
+const prenomInput = document.querySelector("#prenom");
+const emailInput = document.querySelector("#email");
+const adresseInput = document.querySelector("#adresse");
+const motdepasseInput = document.querySelector("#motdepasse");
+
+function verifierEmail(email) {
+    const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return regexEmail.test(email);
+}
+
+function verifierMotdepasse(motdepasse) {
+    const regexMotdepasse =
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+    return regexMotdepasse.test(motdepasse);
+}
+
+function soumettreFormulaire(event) {
   event.preventDefault();
-  let isValid = true;
 
-  const nom = document.getElementById("nom").value;
-  const nomError = document.getElementById("nomError");
-  if (!/^[a-zA-ZÀ-ÿ-]+$/.test(nom)) {
-    nomError.textContent = "Le nom doit contenir uniquement des lettres.";
-    isValid = false;
-  } else {
-    nomError.textContent = "";
+  const nom = nomInput.value;
+  const prenom = prenomInput.value;
+  const email = emailInput.value;
+  const adresse = adresseInput.value;
+  const motdepasse = motdepasseInput.value;
+
+  if (
+      nom === "" ||
+      prenom === "" ||
+      email === "" ||
+      adresse === "" ||
+      motdepasse === ""
+  ) {
+      alert("Veuillez remplir tous les champs");
+      return;
   }
 
-  const prenom = document.getElementById("prenom").value;
-  const prenomError = document.getElementById("prenomError");
-  if (!/^[a-zA-ZÀ-ÿ-]+$/.test(prenom)) {
-    prenomError.textContent = "Le prénom doit contenir uniquement des lettres.";
-    isValid = false;
-  } else {
-    prenomError.textContent = "";
+  if (!verifierEmail(email)) {
+      alert("Adresse e-mail invalide");
+      return;
   }
 
-  const email = document.getElementById("email").value;
-  const emailError = document.getElementById("emailError");
-  if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
-    emailError.textContent = "L'email est invalide.";
-    isValid = false;
-  } else {
-    emailError.textContent = "";
+  if (!verifierMotdepasse(motdepasse)) {
+      alert(
+          "Mot de passe invalide. Il doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial",
+      );
+      return;
   }
 
-  const adresse = document.getElementById("adresse").value;
-  const adresseError = document.getElementById("adresseError");
-  if (adresse.trim() === "") {
-    adresseError.textContent = "L'adresse est requise.";
-    isValid = false;
-  } else {
-    adresseError.textContent = "";
-  }
-
-  const mdp = document.getElementById("mdp").value;
-  const mdpError = document.getElementById("mdpError");
-  if (mdp.length < 8 || !/[A-Z]/.test(mdp) || !/[0-9]/.test(mdp)) {
-    mdp.textContent = "Le mot de passe doit contenir au moins 8 caractères, une majuscule et un chiffre.";
-    isValid = false;
-  } else {
-    mdpError.textContent = "";
-  }
-
-  if (isValid) {
-    alert("Formulaire soumis avec succès");
-  }
-});
+  fetch("https://67974380c2c861de0c6c097e.mockapi.io/users", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+          nom: nom,
+          prenom: prenom,
+          email: email,
+          adresse: adresse,
+          motdepasse: motdepasse,
+      }),
+  })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error));
+}
+form.addEventListener("submit", soumettreFormulaire);
