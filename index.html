@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulaire REGEX</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <form id="regexForm">
+    <h1>Formulaire REGEX</h1>
+    <div class="container">
+      <label for="nom">Nom</label>
+      <input type="text" name="nom" id="nom" placeholder="Veuillez saisir votre nom" required>
+      <span class="error" id="nomError"></span>
+    </div>
+    <div class="container">
+      <label for="prenom">Prénom</label>
+      <input type="text" name="prenom" id="prenom" placeholder="Veuillez saisir votre prénom" required>
+      <span class="error" id="prenomError"></span>
+    </div>
+    <div class="container">
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" placeholder="Veuillez saisir votre email" required>
+      <span class="error" id="emailError"></span>
+    </div>
+    <div class="container">
+      <label for="adresse">Adresse</label>
+      <input type="text" name="adresse" id="adresse" placeholder="Veuillez saisir votre adresse" required>
+      <span class="error" id="adresseError"></span>
+    </div>
+    <div class="container">
+      <label for="mdp">Mot de passe</label>
+      <input type="mdp" name="mdp" id="mdp" placeholder="Veuillez saisir votre mot de passe" required>
+      <span class="error" id="mdpError"></span>
+    </div>
+    <button type="submit">Envoyer</button>
+  </form>
+  <script src="script.js"></script>
+</body>
+
+</html>
